@@ -1,0 +1,50 @@
+{
+  "name": "erp-reciclagem",
+  "version": "1.0.0",
+  "description": "Sistema ERP para empresas de reciclagem com gestão de materiais, clientes, vendas e NF-e",
+  "main": "backend/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && node index.js",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "node build.js",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm install --production",
+    "start": "cd backend && node index.js",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "deploy:prepare": "npm run build",
+    "deploy:neon": "node deploy-neon.js",
+    "test:neon": "cd backend && node -e \"const { Pool } = require('pg'); require('dotenv').config(); const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }); pool.query('SELECT NOW()', (err, result) => { if (err) { console.error('❌ Erro:', err.message); process.exit(1); } else { console.log('✅ Conexão OK:', result.rows[0].now); process.exit(0); } });\"",
+    "test:integration": "node test-neon-integration.js",
+    "test": "cd frontend && npm test",
+    "lint": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "erp",
+    "reciclagem",
+    "nfe",
+    "gestao",
+    "materiais",
+    "vendas",
+    "react",
+    "nodejs",
+    "sqlite"
+  ],
+  "author": "Sistema ERP Reciclagem",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/erp-reciclagem.git"
+  },
+  "homepage": "https://erp-reciclagem.vercel.app",
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
