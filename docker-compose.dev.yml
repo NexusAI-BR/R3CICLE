@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  database:
+    image: postgres:15-alpine
+    container_name: r3cicle_dev_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: r3cicle_dev
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+    networks:
+      - r3cicle_dev_network
+
+  # Backend API - Development
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: r3cicle_dev_api
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DATABASE_URL: postgresql://dev_user:dev_password@database:5432/r3cicle_dev?sslmode=disable
+      FRONTEND_URL: http://localhost:3000
+      JWT_SECRET: dev_jwt_secret
+    ports:
+      - "5001:5000"
+    networks:
+      - r3cicle_dev_network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+
+  # Frontend React - Development
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: r3cicle_dev_web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      REACT_APP_API_URL: http://localhost:5001/api
+      CHOKIDAR_USEPOLLING: true
+    ports:
+      - "3001:3000"
+    networks:
+      - r3cicle_dev_network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "start"]
+
+volumes:
+  postgres_dev_data:
+    driver: local
+
+networks:
+  r3cicle_dev_network:
+    driver: bridge
