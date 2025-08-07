@@ -128,3 +128,4 @@ docs/build/
 # Miscellaneous
 *.tsbuildinfo
 .eslintcache
+.vercel
