@@ -163,6 +163,17 @@ const response = await fetch(`http://localhost:5000/api/nfe/logs-sefaz?${params}
 
 **Solução**: Renomeada a primeira função para `resetBalancaForm`
 
+## 🚀 Status Atual
+
+### Deploy do Backend no Railway
+- [x] Repositório GitHub criado e sincronizado
+- [x] Backend configurado para Railway
+- [x] Banco de dados PostgreSQL conectado
+- [x] Configurações de deploy preparadas
+- [⏳] Deploy final (aguardando upgrade do plano Railway)
+
+**Progresso**: 95% concluído - Aguardando upgrade do plano Railway
+
 ## 🎯 Próximos Passos
 
 - [ ] Implementar integração real com SEFAZ
@@ -309,6 +320,7 @@ node deploy-production.js
 ## 📋 Arquivos de Documentação
 
 - `README.md` - Documentação principal do projeto
+- `DEPLOY_RAILWAY_MANUAL.md` - **[NOVO]** Instruções para deploy manual no Railway
 - `DEPLOY_RAILWAY_FINAL.md` - Guia completo para deploy no Railway
 - `STATUS_PROJETO_ATUAL.md` - Status atual e próximos passos
 - `DEPLOY_COMPLETO.md` - Documentação geral de deploy
