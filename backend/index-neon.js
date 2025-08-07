@@ -16,8 +16,9 @@ let isPostgreSQL = false;
 if (process.env.DATABASE_URL) {
   // PostgreSQL (Neon.tech) para produção
   const { Pool } = require('pg');
+  const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_QEk8OG9JUfcK@ep-calm-glitter-acwyzgn2-pooler.sa-east-1.aws.neon.tech/neondb?channel_binding=require&sslmode=require';
   db = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: connectionString,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
   });
   isPostgreSQL = true;
